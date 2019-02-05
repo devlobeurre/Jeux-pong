@@ -1,3 +1,69 @@
+// Vecteur - déterminera position des éléments
+class Vec{
+	constructor(x=0, y=0){
+		this.x = x;
+		this.y = y;
+	}
+}
+// rectangle
+class Rect{
+	constructor(w, h){
+		this.pos = new Vec(); // position par défaut de Vec (x = y = 0)
+		this.size = new Vec(w,h); // remplace x et y par deux valeurs undefined w(longeur) et h(largeur)
+	}
+// fonctions utilisées pour la balle
+	get left(){
+		return this.pos.x; // balle touche la bordure gauche du cadre
+
+	}
+	get right(){
+		return this.pos.x + this.size.x; //  balle touche la bordure droite du cadre
+		
+	}
+	get top(){
+		return this.pos.y; //  balle touche la bordure haute du cadre
+		
+	}
+	get bottom(){
+		return this.pos.y + this.size.y; // balle touche la bordure basse du cadre
+		
+	}
+}
+// La balle
+class Ball extends Rect{
+	constructor(){
+		super(10,10); // w = h = 10 - taille de la balle
+		this.mouv = new Vec(); // postion initiale de la balle x = y = 0
+	}
+}
+
+// Joueurs
+class Player extends Rect{
+	constructor(){
+		super(20, 100);
+		this.score = 0;
+	}
+}
+
+class Pong{
+// type de cadre	
+	constructor (canvas){
+		this._canvas = canvas;
+		this._context = canvas.getContext("2d");
+
+		this.ball = new Ball();
+// position initiale de la balle
+        this.ball.pos.x = 100;
+        this.ball.pos.y = 50;
+// déplacement initial de la balle
+        this.ball.mouv.x = 100;
+        this.ball.mouv.y = 100;
+
+// 2 joueurs
+        this.players = [
+            new Player,
+            new Player,
+        ];
 // position des 2 joueurs
         this.players[0].pos.x = 40; // Joueur 1 à gauche
         this.players[1].pos.x = this._canvas.width - 40; //Joueur 2 à droite
