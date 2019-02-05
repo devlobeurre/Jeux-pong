@@ -82,7 +82,13 @@ class Pong{
         });
         callback(); 
 	}
-
+//collision balle - joeurs
+    collision(player, ball){
+    	if (player.left < ball.right && player.right > ball.left &&
+    	player.top < ball.bottom && player.bottom > ball.top){
+    		ball.mouv.x = - ball.mouv.x // balle change direction après collision
+    	}
+    }
 	draw(){
 // fond noir - longeur et largeur égale à celle de l'élément canvas
         this._context.fillStyle = "#000";
@@ -112,8 +118,8 @@ class Pong{
         }
 
         this.players[1].pos.y = this.ball.pos.y; /*joueur 2 suit la balle
-                                                   impossible de le battre*/
-
+                                               impossible de le battre*/                                                   
+        this.players.forEach(player => this.collision(player, this.ball)); //les deux jouerus peuvent entrer en collision avec la balle
         this.draw(); // appel fonction draw qui dessine le cadre
 
     }
