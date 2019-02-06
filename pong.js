@@ -52,12 +52,6 @@ class Pong{
 		this._context = canvas.getContext("2d");
 
 		this.ball = new Ball();
-// position initiale de la balle
-        this.ball.pos.x = 100;
-        this.ball.pos.y = 50;
-// déplacement initial de la balle
-        this.ball.mouv.x = 100;
-        this.ball.mouv.y = 100;
 
 // 2 joueurs
         this.players = [
@@ -81,6 +75,7 @@ class Pong{
 	        requestAnimationFrame(callback); // rappel fonction callback après rafraichissemnt de la page
         });
         callback(); 
+        this.reset(); // la balle est au milieu en début de partie
 	}
 //collision balle - joeurs
     collision(player, ball){
@@ -103,14 +98,42 @@ class Pong{
         this._context.fillStyle = "#fff";
         this._context.fillRect(Rect.left, Rect.top, //position
 	                           Rect.size.x, Rect.size.y);//taille
+    }
+	reset(){
+// position initiale de la balle - centre du cadre
+        this.ball.pos.x = this._canvas.width / 2;
+        this.ball.pos.y = this._canvas.height / 2;
+// déplacement initial de la balle - nul (la balle reste au centre)
+        this.ball.mouv.x = 0;
+        this.ball.mouv.y = 0;
+    }
+//  reprise de la partie 
+    start(){
+    	// si la balle est au centre (après le reset)
+		if (this.ball.mouv.x === 0 && this.ball.mouv.y === 0){
+			        // balle bouge vars la droite lorsque la partie reprend
+			        this.ball.mouv.x = 300;
+                    this.ball.mouv.y = 300;
+        }
+	
 	}
+	
+
 	update(dt){
 // déplacement de la balle
 	    this.ball.pos.x += this.ball.mouv.x * dt;
 	    this.ball.pos.y += this.ball.mouv.y * dt;
 
-//inverser mouvement si balle sort du cadre
+/*maintenant que nous avons les deux joueurs 
+lorsque la balle touche les bords droite ou gauche 
+On ne veut pas qu'elle rebondisse
+On veut asigner un point à un joueur*/
         if (this.ball.left < 0 || this.ball.right >= this._canvas.width){
+        	const playerId = this.ball.mouv.x <0 | 0 ; // la balle atteint la bord gauche
+        	this.players[playerId].score++; // + 1 point lorsque la balle atteint le bord gauche.
+        	console.log(playerId)
+        	this.reset(); /* à chaque fois que la balle atteint le bord gauche,
+        	                 elle reprend sa position initiale (centre du cadre)*/
         	this.ball.mouv.x = -this.ball.mouv.x;
         }
         if (this.ball.top < 0 || this.ball.bottom >= this._canvas.height){
@@ -135,4 +158,9 @@ const pong = new Pong(canvas);
 //Joeur 1 suit la souris
 canvas.addEventListener("mousemove", event => {
     pong.players[0].pos.y = event.offsetY // annule mouvements horizontales
+});
+
+//La partie reprend lorsque l'on clique sur la souris
+canvas.addEventListener("click", event => {
+    pong.start(); // 
 });
