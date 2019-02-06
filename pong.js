@@ -161,7 +161,7 @@ On veut asigner un point à un joueur*/
 
         this.players[1].pos.y = this.ball.pos.y; /*joueur 2 suit la balle
                                                impossible de le battre*/                                                   
-        this.players.forEach(player => this.collision(player, this.ball)); //les deux jouerus peuvent entrer en collision avec la balle
+        this.players.forEach(player => this.collision(player, this.ball)); //les deux joueurs peuvent entrer en collision avec la balle
         this.draw(); // appel fonction draw qui dessine le cadre
 
     }
