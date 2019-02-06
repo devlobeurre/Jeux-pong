@@ -129,7 +129,7 @@ class Pong{
 		if (this.ball.mouv.x === 0 && this.ball.mouv.y === 0){
 			        // balle bouge vars la gauche (joueur 1) lorsque la partie reprend
 			        this.ball.mouv.x = - 300,
-			         // 1 chance sur deux que la balle parte en bas ou en haut  
+			         // 1 chance sur deux que la balle se dirige vers le bas ou vers le haut 
                     this.ball.mouv.y = 300 * (Math.random() > .5 ? 1 : - 1);
                     // vitesse lente à chaque reprise de la partie 
                     this.ball.mouv.len = 300;
@@ -161,7 +161,7 @@ On veut asigner un point à un joueur*/
 
         this.players[1].pos.y = this.ball.pos.y; /*joueur 2 suit la balle
                                                impossible de le battre*/                                                   
-        this.players.forEach(player => this.collision(player, this.ball)); //les deux jouerus peuvent entrer en collision avec la balle
+        this.players.forEach(player => this.collision(player, this.ball)); //les deux joueurs peuvent entrer en collision avec la balle
         this.draw(); // appel fonction draw qui dessine le cadre
 
     }
