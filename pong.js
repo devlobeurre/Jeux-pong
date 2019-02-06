@@ -4,6 +4,18 @@ class Vec{
 		this.x = x;
 		this.y = y;
 	}
+	//taille vecteur - détermine vitesse
+	get len(){
+		//calcule hypothènuse
+		return Math.sqrt(this.x * this.x + this.y * this.y)
+	}
+	set len(value){
+		// valeur = len du vecteur * un facteur
+		const fact = value / this.len;
+		// x et y du vecteur égaux
+		this.x *= fact;
+		this.y *= fact;
+	}
 }
 // rectangle
 class Rect{
@@ -81,7 +93,11 @@ class Pong{
     collision(player, ball){
     	if (player.left < ball.right && player.right > ball.left &&
     	player.top < ball.bottom && player.bottom > ball.top){
+    		const len = ball.mouv.len;
     		ball.mouv.x = - ball.mouv.x // balle change direction après collision
+    		ball.mouv.y += 300 * (Math.random() - .5);
+    		ball.mouv.len= len *1.01 /* vitesse de la balle augmente de 1% chaque fois qu'un joueur la touche
+    		                            le const permet d'augmenter de 1 % de la vitesse initiale*/
     	}
     }
 	draw(){
@@ -111,9 +127,12 @@ class Pong{
     start(){
     	// si la balle est au centre (après le reset)
 		if (this.ball.mouv.x === 0 && this.ball.mouv.y === 0){
-			        // balle bouge vars la droite lorsque la partie reprend
-			        this.ball.mouv.x = 300;
-                    this.ball.mouv.y = 300;
+			        // balle bouge vars la gauche (joueur 1) lorsque la partie reprend
+			        this.ball.mouv.x = - 300,
+			         // 1 chance sur deux que la balle se dirige vers le bas ou vers le haut 
+                    this.ball.mouv.y = 300 * (Math.random() > .5 ? 1 : - 1);
+                    // vitesse lente à chaque reprise de la partie 
+                    this.ball.mouv.len = 300;
         }
 	
 	}
